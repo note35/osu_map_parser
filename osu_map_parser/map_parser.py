@@ -130,11 +130,12 @@ class MapParser:
     def __get_section(self, key=None):
         sections = self.sections
         # ignore first line eg: [General] of section => [1:]
-        if key:
+        if key and key in sections.keys():
             self.parse_ret[key] = [self.lines[line] for line in range(sections[key][0], sections[key][1])][1:]
         elif not key:
             for key in self.key_list:
-                self.parse_ret[key] = [self.lines[line] for line in range(sections[key][0], sections[key][1])][1:]
+                if key in sections.keys():
+                    self.parse_ret[key] = [self.lines[line] for line in range(sections[key][0], sections[key][1])][1:]
 
     def __transform_sections(self, key=None):
         if key:
@@ -144,9 +145,10 @@ class MapParser:
                 self.parse_ret[key] = self.__transform_section(key)
 
     def __get_version(self):
-        match = re.compile(r'osu file format v([0-9]*)').match(self.lines[0])
-        if match:
-            self.parse_ret['version'] = match.group(1)
+        if len(self.lines) > 0:
+            match = re.compile(r'osu file format v([0-9]*)').match(self.lines[0])
+            if match:
+                self.parse_ret['version'] = match.group(1)
 
     @property
     def version(self):
