@@ -1,7 +1,9 @@
 TL;DR
 =====
 
-There are totally 3 types of objects. (2018 Jan 27) Circle, Slide and Spin. In the format, it combines both `voice effect` and `position description`.
+There are totally 3 types of hit object. (2018 Jan 27) Circle, Slide and Spin. In the format, it combines both `voice effect` and `position description`.
+
+**Note: `hitobject_parser.py` in this package won't return 100% same results as the json shown in the below documents. Please reference to `hitobject_type.py` to get the return format.**
 
 General Explanation
 ===================
@@ -158,11 +160,13 @@ Slide has 3 types, L(straight), P(curve), B(cross).
     "start_pos": (0,192),
     "timestamp": 350,
     "point_type": 2,
-    "voice_effect": 8,
+    "body_voice_effect": 8,
     "slide_type": "L",
     "end_pos": (368,192),
     "unknown_1": 1,
     "tick": 360,
+    "start_voice_effect": 2,
+    "end_voice_effect": 4,
     "start_sampleset":1
     "start_additions":2
     "end_sampleset":3
@@ -179,7 +183,7 @@ Slide has 3 types, L(straight), P(curve), B(cross).
     "start_pos": (56,192),
     "timestamp": 350,
     "point_type": 2,
-    "voice_effect": 0,
+    "body_voice_effect": 0,
     "slide_type": "L",
     "end_pos": (304,192),
     "unknown_1": 1,
@@ -237,3 +241,4 @@ Spin
     "sampleset": 1,
     "additions": 2,
 }
+```
