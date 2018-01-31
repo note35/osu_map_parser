@@ -51,9 +51,9 @@ mp.colours
 
 # objects of map
 mp.hitobjects
-OrderedDict([
-    'time': [objects]
-])
+[
+    '...',
+]
 ```
 
 
@@ -67,7 +67,23 @@ $ python3.6 -m unittest test_parse_standard_map
 ```
 
 
+**mypy**
+
+```bash
+$ virtualenv -p /usr/local/bin/python3.6 env3
+$ . env3/bin/activate.fish
+$ pip install mypy
+$ mypy hitobject_parser.py
+# *No Error means good*
+```
+
+
 TODO
 ====
 
-Parse `hitobjects` and `events` with detailed information
+- Parse `events` with detailed information
+- Documentation of return of `hitobject_parser.py`
+- Integrate `hitobject_parser.py` into `map_parser.py`
+- Integrate with Travis CI
+- mypy for `map_parser.py`
+- flake8 for all
