@@ -144,14 +144,14 @@ class TestMapParser(unittest.TestCase):
 
     def test_hitobjects(self):
         first_obj_key = next(iter(self.s1.hitobjects))
-        expected_result = ['256', '72', '1', '4']
-        self.assertEqual(self.s1.hitobjects[first_obj_key], expected_result)
+        expected_result = '256,72,368,1,4'
+        self.assertEqual(self.s1.hitobjects[0], expected_result)
         last_obj_key = next(reversed(self.s1.hitobjects))
-        expected_result = ['256', '48', '5', '4']
-        self.assertEqual(self.s1.hitobjects[last_obj_key], expected_result)
+        expected_result = '256,48,77731,5,4'
+        self.assertEqual(self.s1.hitobjects[-1], expected_result)
         first_obj_key = next(iter(self.s2.hitobjects))
-        expected_result = ['13', '138', '6', '0', 'B|139:96|99:181|238:140', '1', '232.5', '4|0', '0:1|0:0', '0:0:0:0:']
-        self.assertEqual(self.s2.hitobjects[first_obj_key], expected_result)
+        expected_result = '13,138,800,6,0,B|139:96|99:181|238:140,1,232.5,4|0,0:1|0:0,0:0:0:0:'
+        self.assertEqual(self.s2.hitobjects[0], expected_result)
         last_obj_key = next(reversed(self.s2.hitobjects))
-        expected_result = ['168', '132', '1', '2', '1:3:0:0:']
-        self.assertEqual(self.s2.hitobjects[last_obj_key], expected_result)
+        expected_result = '168,132,229627,1,2,1:3:0:0:'
+        self.assertEqual(self.s2.hitobjects[-1], expected_result)

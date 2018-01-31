@@ -122,8 +122,7 @@ class MapParser:
             # TODO: define a OrderedDict with meaningful key, value
             return OrderedDict([MapParser.transform_timingpoints_line(line) for line in self.parse_ret[key] if line != ''])
         elif key == 'hitobjects':
-            # TODO: define a OrderedDict with meaningful key, value
-            return OrderedDict([MapParser.transform_hitobjects_line(line) for line in self.parse_ret[key] if line != ''])
+            return [line for line in self.parse_ret[key] if line != '']
         else:
             raise KeyError('{} is not a valid key'.format(key))
 
