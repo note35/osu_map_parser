@@ -11,7 +11,7 @@ from hitobject_type import (Position, Hitsounds,
 class HitObjectParser:
 
     @staticmethod
-    def parse(hitobject:str) -> Union[None, Circle, Slide, Spin]:
+    def parse(hitobject: str) -> Union[None, Circle, Slide, Spin]:
         splits = hitobject.split(',')
         try:
             hitobject_type = splits[3]
@@ -85,7 +85,7 @@ class HitObjectParser:
         except IndexError:
             logging.warning('Invalid Slide Position Line: {}'.format(posline))
             return None
- 
+
     @staticmethod
     def parse_slide_voice_effect(voice_effect: str) -> Optional[Tuple[int, int]]:
         components = voice_effect.split('|')
@@ -116,7 +116,7 @@ class HitObjectParser:
             body_ve = int(components[4])
             slide_type, body_pos, end_pos = HitObjectParser.parse_slide_posline(components[5])
             tick = float(components[7])
-            start_ve, end_ve = HitObjectParser.parse_slide_voice_effect(components[8]) if len(components) > 9 else (0,0)
+            start_ve, end_ve = HitObjectParser.parse_slide_voice_effect(components[8]) if len(components) > 9 else (0, 0)
             if len(components) == 11:
                 hitsounds = HitObjectParser.parse_slide_hitsounds(components[9] + ',' + components[10])
                 if hitsounds:

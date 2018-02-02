@@ -118,7 +118,7 @@ class MapParser:
                 elif line:
                     tmp_list.append(MapParser.transform_event_line(line))
             return OrderedDict(tmp_list)
-        elif key ==  'timingpoints':
+        elif key == 'timingpoints':
             # TODO: define a OrderedDict with meaningful key, value
             return OrderedDict([MapParser.transform_timingpoints_line(line) for line in self.parse_ret[key] if line != ''])
         elif key == 'hitobjects':

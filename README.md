@@ -67,15 +67,20 @@ $ python3.6 -m unittest test_parse_standard_map
 ```
 
 
-**mypy**
+**mypy/flake8**
 
 ```bash
 $ virtualenv -p /usr/local/bin/python3.6 env3
 $ . env3/bin/activate.fish
-$ pip install mypy
-$ mypy hitobject_parser.py
+$ pip install -r requirement.txt
+
+$ mypy {python_filename} # current only write well for hitobject_parser.py
+# *No Error means good*
+
+$ flake8 {python_filename
 # *No Error means good*
 ```
+
 
 
 TODO
@@ -86,4 +91,3 @@ TODO
 - Integrate `hitobject_parser.py` into `map_parser.py`
 - Integrate with Travis CI
 - mypy for `map_parser.py`
-- flake8 for all
