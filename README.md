@@ -90,4 +90,3 @@ TODO
 - Documentation of return of `hitobject_parser.py`
 - Integrate `hitobject_parser.py` into `map_parser.py`
 - Integrate with Travis CI
-- mypy for `map_parser.py`

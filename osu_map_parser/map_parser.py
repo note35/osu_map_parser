@@ -1,11 +1,18 @@
 import re
 
 from collections import OrderedDict
+from typing import Any, Dict, List, NamedTuple, Tuple, Union
+
+
+class Colour(NamedTuple):
+    R: str
+    G: str
+    B: str
 
 
 class MapParser:
 
-    def __init__(self, target_path):
+    def __init__(self, target_path: str) -> None:
         self.parse_ret = {
             'version': -1,
             'general': {},
@@ -15,8 +22,8 @@ class MapParser:
             'events': {},
             'timingpoints': {},
             'colours': {},
-            'hitobjects': {},
-        }
+            'hitobjects': [],
+        }  # type: Dict
 
         # data preparation
         self.__load_file(target_path)
@@ -25,12 +32,12 @@ class MapParser:
         self.__transform_sections()
         self.__get_version()
 
-    def __load_file(self, path):
+    def __load_file(self, path: str) -> None:
         with open(path, 'r') as fptr:
             lines = fptr.readlines()
         self.lines = [line.strip() for line in lines]
 
-    def __cut_section(self):
+    def __cut_section(self) -> None:
         section_idx_list = []
         key_list = []
 
@@ -68,36 +75,40 @@ class MapParser:
         """
 
     @staticmethod
-    def transform_pair_line(line):
+    def transform_pair_line(line: str) -> Tuple[str, str]:
         line_split = line.split(':')
         key = line_split[0].strip()
         value = line_split[1].strip()
         return (key, value)
 
     @staticmethod
-    def transform_colour_line(line):
+    def transform_colour_line(line: str) -> Tuple[str, Any]:
+        # mypy's bug, the return value should be Tuple[str, Colour]
         line_split = line.split(':')
         key = line_split[0].strip()
-        value = tuple(line_split[1].strip().split(','))
+        colors = line_split[1].strip().split(',')
+        value = Colour(colors[0], colors[1], colors[2])
         return (key, value)
 
     @staticmethod
-    def transform_event_line(line):
+    def transform_event_line(line: str) -> Tuple[str, List[str]]:
         # TODO: handle file name such as "aaa,bbb.txt"
         line_split = line.split(',')
         return (line_split[0], line_split[1:])
 
     @staticmethod
-    def transform_timingpoints_line(line):
+    def transform_timingpoints_line(line: str) -> Tuple[str, List[str]]:
         line_split = line.split(',')
         return (line_split[0], line_split[1:])
 
+    """
     @staticmethod
-    def transform_hitobjects_line(line):
+    def transform_hitobjects_line(line: str) -> Tuple[str, str]:
         line_split = line.split(',')
         return (line_split[2], line_split[0:2]+line_split[3:])
+    """
 
-    def __transform_section(self, key):
+    def __transform_section(self, key: str) -> Union[dict, OrderedDict, List[str]]:
         if key in ['general', 'editor', 'metadata', 'difficulty']:
             tmp_dict = {}
             for item in [MapParser.transform_pair_line(line) for line in self.parse_ret[key] if line != '']:
@@ -126,7 +137,7 @@ class MapParser:
         else:
             raise KeyError('{} is not a valid key'.format(key))
 
-    def __get_section(self, key=None):
+    def __get_section(self, key: Union[str, None]=None) -> None:
         sections = self.sections
         # ignore first line eg: [General] of section => [1:]
         if key and key in sections.keys():
@@ -136,51 +147,51 @@ class MapParser:
                 if key in sections.keys():
                     self.parse_ret[key] = [self.lines[line] for line in range(sections[key][0], sections[key][1])][1:]
 
-    def __transform_sections(self, key=None):
+    def __transform_sections(self, key: Union[str, None]=None) -> None:
         if key:
             self.parse_ret[key] = self.__transform_section(key)
         elif not key:
             for key in self.key_list:
                 self.parse_ret[key] = self.__transform_section(key)
 
-    def __get_version(self):
+    def __get_version(self) -> None:
         if len(self.lines) > 0:
             match = re.compile(r'osu file format v([0-9]*)').match(self.lines[0])
             if match:
                 self.parse_ret['version'] = match.group(1)
 
     @property
-    def version(self):
+    def version(self) -> int:
         return self.parse_ret['version']
 
     @property
-    def general(self):
+    def general(self) -> Dict[str, str]:
         return self.parse_ret['general']
 
     @property
-    def editor(self):
+    def editor(self) -> Dict[str, str]:
         return self.parse_ret['editor']
 
     @property
-    def metadata(self):
+    def metadata(self) -> Dict[str, str]:
         return self.parse_ret['metadata']
 
     @property
-    def difficulty(self):
+    def difficulty(self) -> Dict[str, str]:
         return self.parse_ret['difficulty']
 
     @property
-    def events(self):
+    def events(self) -> OrderedDict:
         return self.parse_ret['events']
 
     @property
-    def timingpoints(self):
+    def timingpoints(self) -> OrderedDict:
         return self.parse_ret['timingpoints']
 
     @property
-    def colours(self):
+    def colours(self) -> Dict[str, Colour]:
         return self.parse_ret['colours']
 
     @property
-    def hitobjects(self):
+    def hitobjects(self) -> List[str]:
         return self.parse_ret['hitobjects']
